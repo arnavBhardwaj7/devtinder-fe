@@ -2,9 +2,9 @@ import React from 'react'
 
 const Navbar = () => {
   return (
-    <div data-theme="halloween" className="navbar bg-base-300 shadow-sm">
+    <div data-theme="halloween" className="navbar bg-base-300 shadow-sm fixed">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl">devTinder</a>
+          <a className="btn btn-ghost text-xl">devTinder UI</a>
         </div>
         <div className="flex gap-2">
           <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" />
