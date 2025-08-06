@@ -3,11 +3,11 @@ import React, { useState } from 'react'
 
 function Login() {
 
-  const [emailID, setEmailID] = useState("")  
-  const [password, setPassword] = useState("");
+  const [emailID, setEmailID] = useState("arnav@gmail.com")  
+  const [password, setPassword] = useState("Arnav@123");
 
   const loginAPI = async () => {
-      const data =  await axios.post("http://localhost:3000/login",{"emailID": emailID, "password": password})
+      const data =  await axios.post("http://localhost:3000/login",{emailID, password})
       console.log("DATA:", data);
   }
 
