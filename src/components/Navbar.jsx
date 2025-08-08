@@ -8,7 +8,6 @@ import { API_BASE_URL } from '../utils/constants';
 const Navbar = () => {
 
   const user = useSelector((store) => store.user);
-  console.log("User", user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -16,7 +15,6 @@ const Navbar = () => {
   const handleLogout = async () => {
     try{
       const response = await axios.post(API_BASE_URL + "/logout", {withCredentials: true});
-      console.log(response);
       dispatch(removeUser());
       navigate("/login");
     }catch(error){

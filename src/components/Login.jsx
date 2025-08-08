@@ -16,11 +16,9 @@ function Login() {
   const loginAPI = async () => {
     try{
       const data =  await axios.post(API_BASE_URL+"/login",{emailID, password})
-      console.log("DATA:", data);
       dispatch(addUser(data?.data));
       return navigate("/feed")
     }catch(error){
-      console.log(error?.response?.data?.data);
         setError(error?.response?.data?.data);
     }
   }

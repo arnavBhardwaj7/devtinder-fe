@@ -18,16 +18,13 @@ function Body() {
   const fetchUser = async() => {
     try{
       const user = await axios.get(API_BASE_URL + "/profile/view", {withCredentials: true});
-      console.log(user)
       dispatch(addUser(user.data))
     }catch(error){
       navigate("/login")
-      console.log(error)
     }
   }
 
   useEffect(() => {
-    console.log(userData?.data);
     if(!userData?.data){
       fetchUser();
     }
