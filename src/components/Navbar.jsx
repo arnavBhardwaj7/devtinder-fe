@@ -14,7 +14,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try{
-      const response = await axios.post(API_BASE_URL + "/logout", {withCredentials: true});
+      await axios.post(API_BASE_URL + "/logout", {withCredentials: true});
       dispatch(removeUser());
       navigate("/login");
     }catch(error){
@@ -44,8 +44,11 @@ const Navbar = () => {
               <Link to="/profile">
                   Profile
               </Link>
-              <Link to="/">
-                Settings
+              <Link to="/connections">
+                Connections
+              </Link>
+              <Link to="/requests">
+                Requests
               </Link>
               <Link to="/login" onClick={() => {
                 handleLogout()

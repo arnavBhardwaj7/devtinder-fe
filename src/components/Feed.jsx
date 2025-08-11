@@ -1,55 +1,45 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { useEffect } from 'react'
-import { API_BASE_URL } from '../utils/constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { addFeed } from '../utils/feedSlice';
-import Card from './Card';
+import axios from "axios";
+import React from "react";
+import { API_BASE_URL } from "../utils/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { addFeed } from "../utils/feedSlice";
+import { useEffect } from "react";
+import Card from "./Card";
 
+const Feed = () => {
+  const feed = useSelector((store) => store.feed?.data);
+  const dispatch = useDispatch();
 
-function Feed() {
-
-  const dispatch = useDispatch()
-  const feed = useSelector((store) => store.feed)
-  const [cards, setCards] = useState("")
-
-  const getFeed = async() =>{
-    if(!feed || feed?.length === 0){
-      const res = await axios.get(API_BASE_URL+"/feed", {withCredentials: true});
-      console.log("RESSSS",res)
+  const getFeed = async () => {
+    if (feed) return;
+    try {
+      const res = await axios.get(API_BASE_URL + "/feed", {
+        withCredentials: true,
+      });
       dispatch(addFeed(res?.data));
-      setCards(res?.data);
+    } catch (err) {
+      console.log(err)
+      //TODO: handle error
     }
-    else{
-      setCards(feed)
-    }
-    console.log("CARDDDD", cards);
-  }
-
-  useEffect(()=>{
-    getFeed();
-  },[])
-
-  const handleSwipe = (direction, data) => {
-    console.log(`Swiped ${direction} on:`, data.title);
-    // Optionally trigger an API or store action here
   };
 
-  console.log("CARD DETAILS", cards)
+  useEffect(() => {
+    getFeed();
+  }, []);
+
+  
+  if (!feed) return;
+
+  if (feed.length <= 0)
+    return <h1 className="flex items-center justify-center min-h-screen">No new users founds!</h1>;
+
 
   return (
-    <div className="relative w-80 h-[28rem] mx-auto">
-      {cards.length > 0 ? (
-        cards.map((card) => (
-          <Card key={card._id} data={card} onSwipe={handleSwipe} />
-        ))
-      ) : (
-        <p className="text-center">Loading feed...</p>
-      )}
-    </div>
+    feed && (
+      <div className="flex items-center justify-center min-h-screen">
+        <Card user={feed[0]} feed={true} />
+      </div>
+    )
   );
-  
-
-}
-
-export default Feed
+};
+export default Feed;
