@@ -5,22 +5,21 @@ import { useDispatch } from "react-redux";
 import { removeUserFromFeed } from "../utils/feedSlice";
 
 const Card = ({ user, feed=false, request=false }) => {
-  console.log("USERRRR", user);
   const { _id, firstName, lastName, age, gender, about } = user;
+  console.log(firstName);
   const dispatch = useDispatch();
 
 
   const handleSendRequest = async (status, userId) => {
     try {
-      const res = await axios.post(
+      await axios.post(
         API_BASE_URL + "/request/send/" + status + "/" + userId,
         {},
         { withCredentials: true }
       );
-      console.log(res);
       dispatch(removeUserFromFeed(userId))
     } catch (err) {
-      console.log(err)
+      err
     }
   };
 
@@ -28,7 +27,7 @@ const Card = ({ user, feed=false, request=false }) => {
     try{
         axios.post(API_BASE_URL + "/request/review/" + status + "/" + _id, {}, {withCredentials: true});
     }catch(err){
-      console.log(err);
+      err;
     }
   }
 
@@ -36,7 +35,7 @@ const Card = ({ user, feed=false, request=false }) => {
   return (
     <div className="card bg-base-300 w-96 shadow-xl">
       <figure>
-        <img src={user.photoUrl} alt="photo" />
+        <img src={user.photoUrl} alt="photo" className="w-full h-48 object-cover rounded-t-lg"/>
       </figure>
       <div className="card-body">
         <h2 className="card-title">{firstName + " " + lastName}</h2>

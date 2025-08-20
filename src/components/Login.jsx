@@ -5,6 +5,7 @@ import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../utils/constants";
 import React from "react";
+import Alert from "./Alert";
 
 const Login = () => {
   const [emailID, setEmailID] = useState("");
@@ -20,16 +21,19 @@ const Login = () => {
     try {
       const res = await axios.post(
         API_BASE_URL + "/login",
-        {
-          emailID,
-          password,
-        },
-        { withCredentials: true }
+        { emailID, password },
+        { withCredentials: false }
       );
       dispatch(addUser(res.data));
-      return navigate("/");
+      return navigate("/feed");
     } catch (err) {
-      setError(err?.response?.data || "Something went wrong");
+      setError(
+        err?.response?.data?.data || 
+        err?.response?.data?.error ||
+        err?.message ||
+        "Something went wrong"
+      );
+      setTimeout(() => setError(""), 3000); // Hide after 3s
     }
   };
 
@@ -38,20 +42,26 @@ const Login = () => {
       const res = await axios.post(
         API_BASE_URL + "/signup",
         { firstName, lastName, emailID, password },
-        { withCredentials: true }
+        { withCredentials: false }
       );
       dispatch(addUser(res.data.data));
       return navigate("/profile");
     } catch (err) {
       setError(err?.response?.data || "Something went wrong");
+      setTimeout(() => setError(""), 3000); // Hide after 3s
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-        <div className="w-96">
-          <div className="card-body">
-          <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 ">
+      {/* Error Alert - top right */}
+      {error && (
+        <Alert data={error}/>
+      )}
+      {/* Form */}
+      <div className="w-96">
+        <div className="card-body">
+          <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
             <legend className="fieldset-legend">
               {isLoginForm ? "Login" : "Sign Up"}
             </legend>
@@ -105,7 +115,7 @@ const Login = () => {
                 />
               </label>
             </div>
-            <p className="text-red-500">{error}</p>
+
             <div className="card-actions justify-center m-2">
               <button
                 className="btn btn-primary"
@@ -122,10 +132,11 @@ const Login = () => {
                 ? "New User? Signup Here"
                 : "Existing User? Login Here"}
             </p>
-            </fieldset>
-          </div>
+          </fieldset>
         </div>
       </div>
+    </div>
   );
 };
+
 export default Login;

@@ -20,6 +20,7 @@ function Body() {
       const user = await axios.get(API_BASE_URL + "/profile/view", {withCredentials: true});
       dispatch(addUser(user.data))
     }catch(error){
+      error;
       navigate("/login")
     }
   }

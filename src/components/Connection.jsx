@@ -7,27 +7,28 @@ import { addConnections } from '../utils/connectionSlice'
 
 function Connection() {
 
-    const [feed, setFeed] = useState("")
+    const [connection, setConnection] = useState("")
     const dispatch = useDispatch()
 
     const fetchData = async() => {
         const res = await axios.get(API_BASE_URL+"/user/connections", {withCredentials: true})
-        setFeed(res?.data?.data);
+        setConnection(res?.data?.data);
         dispatch(addConnections(res?.data?.data));
+        console.log(res?.data?.data, "@#$%^&");
     }
 
     useEffect(()=>{
         fetchData();
     },[])
 
-    if(!feed) return
+    if(!connection) return
 
-    if(feed.length === 0) return <h1>No connection found</h1>
+    if(connection.length === 0) return <div className="flex items-center justify-center min-h-screen font-extrabold">No connection found!!</div>
 
   return (
     <div className="flex items-center justify-center min-h-screen gap-6">
-        {feed && 
-        feed.map((data) => {
+        {connection && 
+        connection.map((data) => {
             return <Card user={data} />
         })
         }
